@@ -26,6 +26,7 @@ When you run the application you can see how the SiteState and PageState values 
 
 Obviously, this solution will only work for the common scenario outlined above where state is essentially being used as a read-only immutable cache. If you have more advanced requirements such as the need to mutate state or notify other components of state changes, you will need a more elaborate solution. In those cases, I would suggest you read Rocky Lhotka's blog.
 
+![image](https://github.com/sbwalker/Oqtane.State/assets/4840590/f7229fc5-3925-4aa0-bba8-9465e69d10fa)
 
 
 
