@@ -1,0 +1,24 @@
+﻿@using Oqtane.State.Client.Models
+@inject SiteState SiteState
+
+<h1>Counter</h1>
+
+<div>Cascading Parameter State: @PageState.MyProperty</div>
+<div>Scoped Service State: @SiteState.RemoteIPAddress</div>
+
+<br />
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Increase Counter</button>
+
+@code {
+    [CascadingParameter]
+    public PageState PageState { get; set; }
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

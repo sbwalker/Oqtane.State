@@ -1,0 +1,13 @@
+﻿@using Oqtane.State.Client.Models
+@using Oqtane.State.Client.Components
+@page "/counter"
+@inject SiteState SiteState
+
+<PageTitle>Counter</PageTitle>
+
+<RenderModeBoundary ComponentType="Oqtane.State.Client.Components.Counter" SiteState="@SiteState" PageState="@PageState" @rendermode="RenderMode.InteractiveWebAssembly" />
+
+@code {
+    [CascadingParameter]
+    public PageState PageState { get; set; }
+}

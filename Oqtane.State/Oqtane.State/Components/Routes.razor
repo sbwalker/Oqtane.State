@@ -1,0 +1,21 @@
+﻿@using Oqtane.State.Client.Models
+@inject SiteState SiteState
+
+<CascadingValue Value="@_pageState">
+    <Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly }">
+        <Found Context="routeData">
+            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+            <FocusOnNavigate RouteData="routeData" Selector="h1" />
+        </Found>
+    </Router>
+</CascadingValue>
+
+@code {
+    private PageState _pageState { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _pageState = new PageState();
+        _pageState.MyProperty = "This State Was Passed Across The Render Mode Boundary!";
+    }
+}

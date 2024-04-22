@@ -1,0 +1,25 @@
+@using Oqtane.State.Client.Models
+@inject SiteState ComponentSiteState
+
+<CascadingValue Value="@PageState">
+    <DynamicComponent Type="@Type.GetType(ComponentType)"></DynamicComponent>
+</CascadingValue>
+
+@code {
+    // this component is on the interactive side of the render mode boundary
+    // it receives state as serializable parameters so that the state can be made available to downstream components
+    [Parameter]
+    public string ComponentType { get; set; }
+
+    [Parameter]
+    public SiteState SiteState { get; set; }
+
+    [Parameter]
+    public PageState PageState { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        // repopulate the SiteState service based on the values passed in the SiteState parameter (this is how state is marshalled across the render mode boundary)
+        ComponentSiteState.Hydrate(SiteState);
+    }
+}
