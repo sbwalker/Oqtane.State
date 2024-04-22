@@ -10,6 +10,8 @@ Specifically, the state held in Cascading Parameters or Scoped Services does not
 
 IF we take a step back and consider the typical usage patterns for state within Blazor applications, by far the most common pattern was to load some state early in the application life cycle so that it could be utilized within your downstream components. Cascading Parameters and Scoped Services acted as convenient containers to hold the state, and were essentially being used as a read-only immutable cache for the current user session. And if we focus on this common scenario, there is a simple way to allow Blazor to support Cascading Parameters and Scoped Services in .NET 8.
 
+---------------
+
 Basically we need to manually transfer the state across the render mode boundary. Blazor has always provided a native capability for passing information from one component to another - Parameters. The most important thing to note when passing state across process boundaries is that values must be serializable. 
 
 This sample project was originally created using the standard Blazor Web template (with WebAssembly chosen for Interactivity). We have a SiteState model which is defined as a Scoped Service in Program.cs (client and server projects). We also have a PageState model which is defined as a Cascading Parameter in Routes.razor. 
