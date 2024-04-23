@@ -14,9 +14,11 @@ Basically we need to manually transfer the state across the render mode boundary
 
 ---------------
 
-This sample project was originally created using the standard Blazor Web template (with WebAssembly chosen for Interactivity). We have a SiteState model which is defined as a Scoped Service in Program.cs (client and server projects). We also have a PageState model which is defined as a Cascading Parameter in Routes.razor. 
+This sample project was originally created using the standard Blazor Web template (with WebAssembly chosen for Interactivity). We have a SiteState model which is defined as a Scoped Service in Program.cs (client and server projects) and is initialized in App.razor. We also have a PageState model which is defined as a Cascading Parameter and initialized in Routes.razor. 
 
 Since the Counter page is an interactive Blazor component we are going to focus on how to enable state management within this page. This is going to require us to split the original Counter.razor page component into 2 parts - a page component and a standard component. 
+
+![image](https://github.com/sbwalker/Oqtane.State/assets/4840590/1f470121-6630-48fd-9f4f-17aabee68a4d)
 
 The Counter page component is located in the Pages folder and executes on the static side of the render mode boundary. It contains the @page route directive so that the Blazor router can find it. It also injects the SiteState service and includes the PageState cascading parameter. You will notice that the content of the page component has been replaced with a new component named RenderModeBoundary which includes some parameters for ComponentType, SiteState, and PageState. Essentially these parameters are passing values as serializable parameters to the RenderModeBoundary component. It also includes an @rendermode property which indicates that the RenderModeBoundary component should be rendered interactively (using WebAssembly by default but can be changed to Server or Auto).
 
