@@ -112,9 +112,10 @@ The Counter standard component is located in the Components folder and it execut
 
 When you run the application you can see how the SiteState and PageState values are seamlessly transferred from the static page component to the interactive standard component. Obviously this approach requires some ceremony to implement, but it is only required for scenarios which need to cross the render mode boundary. The logic could easily be abstracted into a base class or service to simplify the implementation in a larger application. And downstream components can rely on the exact same cascading parameters or scoped services regardless of the render mode.
 
+![image](https://github.com/sbwalker/Oqtane.State/assets/4840590/f7229fc5-3925-4aa0-bba8-9465e69d10fa)
+
 Obviously, this solution will only work for the common scenario outlined above where state is essentially being used as a read-only immutable cache. If you have more advanced requirements such as the need to mutate state or notify other components of state changes, you will need a more elaborate solution. In those cases, I would suggest you read Rocky Lhotka's blog: https://blog.lhotka.net/2023/11/28/Per-User-Blazor-8-State
 
-![image](https://github.com/sbwalker/Oqtane.State/assets/4840590/f7229fc5-3925-4aa0-bba8-9465e69d10fa)
 
 
 
