@@ -37,6 +37,8 @@ The Counter page component is located in the Pages folder and executes on the st
     @rendermode="RenderMode.InteractiveWebAssembly" />
 
 @code {
+    // this component is on the static side of the render mode boundary
+
     [CascadingParameter]
     public PageState PageState { get; set; }
 }
@@ -54,7 +56,8 @@ The RenderModeBoundary component is located in the Components folder and it exec
 
 @code {
     // this component is on the interactive side of the render mode boundary
-    // it receives state as serializable parameters so that the state can be made available to downstream components
+    // it receives state as serializable parameters and makes it available to downstream components
+
     [Parameter]
     public string ComponentType { get; set; }
 
@@ -66,8 +69,9 @@ The RenderModeBoundary component is located in the Components folder and it exec
 
     protected override void OnParametersSet()
     {
-        // repopulate the SiteState service based on the values passed in the SiteState parameter 
-        // this is how state is marshalled across the render mode boundary
+        // hydrate the SiteState service based on the values passed in the SiteState parameter
+        // hydration is required as you need to copy the values rather than the reference
+        // this is how Scoped Service state is marshalled across the render mode boundary
         ComponentSiteState.Hydrate(SiteState);
     }
 }
@@ -90,6 +94,9 @@ The Counter standard component is located in the Components folder and it execut
 <button class="btn btn-primary" @onclick="IncrementCount">Increase Counter</button>
 
 @code {
+    // this component is on the interactive side of the render mode boundary
+    // it consumes Scoped Services and Cascading Parameters using the standard approach
+
     [CascadingParameter]
     public PageState PageState { get; set; }
 
