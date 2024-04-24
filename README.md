@@ -22,9 +22,85 @@ Since the Counter page is an interactive Blazor component we are going to focus 
 
 The Counter page component is located in the Pages folder and executes on the static side of the render mode boundary. It contains the @page route directive so that the Blazor router can find it. It also injects the SiteState service and includes the PageState cascading parameter. You will notice that the content of the page component has been replaced with a new component named RenderModeBoundary which includes some parameters for ComponentType, SiteState, and PageState. Essentially these parameters are passing values as serializable parameters to the RenderModeBoundary component. It also includes an @rendermode property which indicates that the RenderModeBoundary component should be rendered interactively (using WebAssembly by default but can be changed to Server or Auto).
 
+```
+@using Oqtane.State.Client.Models
+@using Oqtane.State.Client.Components
+@page "/counter"
+@inject SiteState SiteState
+
+<PageTitle>Counter</PageTitle>
+
+<RenderModeBoundary 
+    ComponentType="Oqtane.State.Client.Components.Counter" 
+    SiteState="@SiteState" 
+    PageState="@PageState" 
+    @rendermode="RenderMode.InteractiveWebAssembly" />
+
+@code {
+    [CascadingParameter]
+    public PageState PageState { get; set; }
+}
+```
+
 The RenderModeBoundary component is located in the Components folder and it executes on the interactive side of the render mode boundary. It is a "shim" component which accepts the parameter values which are passed to it by the parent component. The PageState value is assigned to a new cascading parameter which will be available to all downstream interactive components. The SiteState value is used to hydrate the SiteState service (named ComponentSiteState for clarity) which will be available to all downstream interactive components. The ComponentType string is used to dynamically create the Counter component (note that a string is used because a Type is not serializable).
 
+```
+@using Oqtane.State.Client.Models
+@inject SiteState ComponentSiteState
+
+<CascadingValue Value="@PageState">
+    <DynamicComponent Type="@Type.GetType(ComponentType)"></DynamicComponent>
+</CascadingValue>
+
+@code {
+    // this component is on the interactive side of the render mode boundary
+    // it receives state as serializable parameters so that the state can be made available to downstream components
+    [Parameter]
+    public string ComponentType { get; set; }
+
+    [Parameter]
+    public SiteState SiteState { get; set; }
+
+    [Parameter]
+    public PageState PageState { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        // repopulate the SiteState service based on the values passed in the SiteState parameter 
+        // this is how state is marshalled across the render mode boundary
+        ComponentSiteState.Hydrate(SiteState);
+    }
+}
+```
+
 The Counter standard component is located in the Components folder and it executes on the interactive side of the render mode boundary (inheriting the render mode from the RenderModeBoundary component). It includes references to the (interactive) SiteState service and the (interactive) PageState cascading parameter.
+
+```
+@using Oqtane.State.Client.Models
+@inject SiteState SiteState
+
+<h1>Counter</h1>
+
+<div>Cascading Parameter State: @PageState.MyProperty</div>
+<div>Scoped Service State: @SiteState.RemoteIPAddress</div>
+
+<br />
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Increase Counter</button>
+
+@code {
+    [CascadingParameter]
+    public PageState PageState { get; set; }
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
+```
 
 When you run the application you can see how the SiteState and PageState values are seamlessly transferred from the static page component to the interactive standard component. Obviously this approach requires some ceremony to implement, but it is only required for scenarios which need to cross the render mode boundary. The logic could easily be abstracted into a base class or service to simplify the implementation in a larger application. And downstream components can rely on the exact same cascading parameters or scoped services regardless of the render mode.
 
