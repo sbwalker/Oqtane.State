@@ -38,6 +38,7 @@ The Counter page component is located in the Pages folder and executes on the st
 
 @code {
     // this component is on the static side of the render mode boundary
+    // it passes the Scoped Service and Cascading Parameter as serialized component parameters to RenderModeBoundary
 
     [CascadingParameter]
     public PageState PageState { get; set; }
@@ -56,7 +57,7 @@ The RenderModeBoundary component is located in the Components folder and it exec
 
 @code {
     // this component is on the interactive side of the render mode boundary
-    // it receives state as serializable parameters and makes it available to downstream components
+    // it receives state as serialized parameters and makes them available to downstream components
 
     [Parameter]
     public string ComponentType { get; set; }
@@ -71,7 +72,7 @@ The RenderModeBoundary component is located in the Components folder and it exec
     {
         // hydrate the SiteState service based on the values passed in the SiteState parameter
         // hydration is required as you need to copy the values rather than the reference
-        // this is how Scoped Service state is marshalled across the render mode boundary
+        // this is how the Scoped Service state is marshalled across the render mode boundary
         ComponentSiteState.Hydrate(SiteState);
     }
 }
