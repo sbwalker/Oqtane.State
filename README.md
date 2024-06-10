@@ -6,11 +6,15 @@ Traditionally when developing in Interactive Blazor, the two most common ways to
 
 In .NET 8, Microsoft introduced Static Blazor which completely changed the approach for developing Blazor applications. In Static Blazor, components are now statically rendered by default and you also have the ability to render some components interactively based on your specific requirements. This new approach resulted in some challenges for state management as static and interactive components utilize completely different process models. 
 
-Specifically, the state held in Cascading Parameters or Scoped Services does not flow automatically across render mode boundaries. If your application loaded some state on the server it could be accessed within your static components - but if you tried to access it within your interactive components, it would be null.
+Specifically, the state held in Cascading Parameters or Scoped Services does not flow automatically across render mode boundaries. If your application loaded some state on the server it could be accessed within your static components - but if you tried to access it within your interactive components, it would be NULL.
+
+![OqtaneState-1](https://github.com/sbwalker/Oqtane.State/assets/4840590/c3c58b7d-9543-455f-8a9e-c83adb4d9e02)
 
 IF we take a step back and consider the typical usage patterns for state within Blazor applications, by far the most common pattern was to load some state early in the application life cycle so that it could be utilized within your downstream components. Cascading Parameters and Scoped Services acted as convenient containers to hold the state, and were essentially being used as a read-only immutable cache for the current user session. And if we focus on this common scenario, there is a simple way to allow Blazor to support Cascading Parameters and Scoped Services in .NET 8.
 
 Basically we need to manually transfer the state across the render mode boundary. Blazor has always provided a native capability for passing information from one component to another - Parameters. The most important thing to note when passing state across process boundaries is that values must be serializable. 
+
+![OqtaneState-2](https://github.com/sbwalker/Oqtane.State/assets/4840590/5ad81604-731b-42c0-b589-45571ce5ac75)
 
 ---------------
 
