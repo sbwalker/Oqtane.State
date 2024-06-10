@@ -1,6 +1,6 @@
 # Oqtane.State
 
-This is a sample project which demonstrates the techniques utilized in the Oqtane Framework (https://www.oqtane.org) for sharing state in components across static and interactive render modes. 
+This is a sample project which demonstrates the techniques utilized in the Oqtane Framework - a CMS and Application Framework for Blazor and .NET MAUI (https://www.oqtane.org) for sharing state in components across static and interactive render modes. 
 
 Traditionally when developing in Interactive Blazor, the two most common ways to manage state within an application were by using Cascading Parameters or Scoped Services. These techniques were simple to implement and provided a consistent developer experience across your entire Blazor application. 
 
